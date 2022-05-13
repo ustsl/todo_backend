@@ -10,8 +10,8 @@ class Task(models.Model):
                                 verbose_name='Пользователь', on_delete=models.CASCADE, blank=True, null=True)
 
     #Контент задачи (тайтл по ТЗ не требуется, но на всякий случай вывел и его)
-    title = models.CharField(max_length=255, blank=True, verbose_name="Заголовок задачи")
-    content = models.TextField(blank=True, verbose_name="Описание задачи")
+    title = models.CharField(max_length=255, blank=False, verbose_name="Заголовок задачи")
+    content = models.TextField(blank=False, verbose_name="Описание задачи")
 
     #Рабочие
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
