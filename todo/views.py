@@ -16,4 +16,4 @@ class TaskView(viewsets.ModelViewSet):
     #permission_classes = (CustomPermission,)
 
     def get_queryset(self):
-        return Task.objects.all()
+        return Task.objects.all().order_by('time_create')
