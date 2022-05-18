@@ -15,5 +15,12 @@ class TaskView(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     #permission_classes = (CustomPermission,)
 
+
     def get_queryset(self):
         return Task.objects.all().order_by('-time_create')
+
+    def perform_create(self, serializer):
+        user = None
+        if self.request and hasattr(self.request, "user"):
+            user = self.request.user
+        serializer.save(user=user)
