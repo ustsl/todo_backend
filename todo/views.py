@@ -20,7 +20,11 @@ class TaskView(viewsets.ModelViewSet):
         return Task.objects.all().order_by('-time_create')
 
     def perform_create(self, serializer):
-
         if self.request and hasattr(self.request, "user"):
             user = self.request.user
-            serializer.save(user=user)
+            if str(user) != 'AnonymousUser':
+                serializer.save(user=user)
+            else:   
+                serializer.save()
+
+        
