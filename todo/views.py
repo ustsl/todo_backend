@@ -33,6 +33,6 @@ class ArchiveTask(TaskView):
 class GetUserData(views.APIView):
 
     permission_classes = [permissions.IsAuthenticated]
-   
+    
     def get(self, request):
-        return response.Response({'email': str(self.request.user.email)})
+        return response.Response({'email': str(self.request.user.email), 'is_staff': self.request.user.is_staff })
