@@ -1,13 +1,11 @@
 #base
-from rest_framework import viewsets
-from rest_framework.permissions import BasePermission
-from .serializers import TaskSerializer
+from rest_framework import viewsets, permissions, views, response
 
 #inner
+from todo.serializers import TaskSerializer
 from .models import Task
 
-
-
+#views
 class TaskView(viewsets.ModelViewSet):
 
     serializer_class = TaskSerializer
@@ -30,3 +28,11 @@ class ArchiveTask(TaskView):
     
     def get_queryset(self):
         return Task.objects.filter(is_done=True).order_by('-time_create')
+
+#Получаем отдельным запросом почту юзера после авторизации. Необходимо для соответствующего поля на фронте
+class GetUserData(views.APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+   
+    def get(self, request):
+        return response.Response({'email': str(self.request.user.email)})
