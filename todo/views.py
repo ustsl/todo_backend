@@ -30,6 +30,7 @@ class ArchiveTask(TaskView):
         return Task.objects.filter(is_done=True).order_by('-time_create')
 
 #Получаем отдельным запросом почту юзера после авторизации. Необходимо для соответствующего поля на фронте
+
 class GetUserData(views.APIView):
 
     permission_classes = [permissions.IsAuthenticated]

@@ -9,7 +9,7 @@ from django.views.generic.base import TemplateView
 urlpatterns = [
 
     #api
-    path('api/v1', include('todo.urls')),
+    path('api/v1/', include('todo.urls')),
 
     #token
     path('user_auth', include('djoser.urls')),
