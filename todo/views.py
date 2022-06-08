@@ -29,6 +29,11 @@ class ArchiveTask(TaskView):
     def get_queryset(self):
         return Task.objects.filter(is_done=True).order_by('-time_create')
 
+class AllTask(TaskView):
+    
+    def get_queryset(self):
+        return Task.objects.all()
+
 #Получаем отдельным запросом почту юзера после авторизации. Необходимо для соответствующего поля на фронте
 
 class GetUserData(views.APIView):
