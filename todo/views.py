@@ -30,6 +30,8 @@ class ArchiveTask(TaskView):
         return Task.objects.filter(is_done=True).order_by('-time_create')
 
 class AllTask(TaskView):
+
+    permission_classes = [permissions.IsAdminUser]
     
     def get_queryset(self):
         return Task.objects.all()
