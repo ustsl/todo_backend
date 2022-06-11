@@ -7,6 +7,7 @@ from .models import Task
 
 #views
 class TaskView(viewsets.ModelViewSet):
+    #Единый блок для основных вьюх проекта
 
     serializer_class = TaskSerializer
 
@@ -19,26 +20,40 @@ class TaskView(viewsets.ModelViewSet):
                 serializer.save()
 
         
-class ActiveTask(TaskView):
+class UserTaskView(TaskView):
+    #Бизнес-логики немного - касается только фильтрации по параметрам. 
+    # Думаю, нет смысла выносить бизнес-логику параметров в отдельный модуль
 
     def get_queryset(self):
-        return Task.objects.filter(is_done=False).order_by('-time_create')
 
-class ArchiveTask(TaskView):
-    
-    def get_queryset(self):
-        return Task.objects.filter(is_done=True).order_by('-time_create')
+        params = self.request.query_params.get
 
-class AllTask(TaskView):
+        sortingMethod = '-time_create'
+        isDoneFilter = False
+
+        if params('sorting'):
+            sortingMethod = params('sorting')
+        
+        if params('is_done'):
+            isDoneFilter = params('is_done')
+            
+        return Task.objects.filter(is_done=isDoneFilter).order_by(sortingMethod)
+
+
+class AdminTaskView(TaskView):
+    #Административная вью для удобства обособлена от пользовательской вью, 
+    # т.к. может предполагаться расширение методов. В принципе, можно также зашить в основную вью.
 
     permission_classes = [permissions.IsAdminUser]
     
     def get_queryset(self):
         return Task.objects.all()
 
-#Получаем отдельным запросом почту юзера после авторизации. Необходимо для соответствующего поля на фронте
+
 
 class GetUserData(views.APIView):
+    #Получаем отдельным запросом почту юзера после авторизации. 
+    # Необходимо для соответствующего поля на фронте
 
     permission_classes = [permissions.IsAuthenticated]
     
