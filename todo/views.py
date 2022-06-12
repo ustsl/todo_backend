@@ -27,7 +27,6 @@ class UserTaskView(TaskView):
     def get_queryset(self):
 
         params = self.request.query_params.get
-
         sortingMethod = '-time_create'
         isDoneFilter = False
 
@@ -36,8 +35,12 @@ class UserTaskView(TaskView):
         
         if params('is_done'):
             isDoneFilter = params('is_done')
+
+        obj = Task.objects.filter(is_done=isDoneFilter)
+        if params('get_mail'):
+            obj.filter(user__email=params('get_mail'))
             
-        return Task.objects.filter(is_done=isDoneFilter).order_by(sortingMethod)
+        return obj.order_by(sortingMethod)
 
 
 class AdminTaskView(TaskView):
