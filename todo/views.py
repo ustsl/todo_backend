@@ -37,8 +37,8 @@ class UserTaskView(TaskView):
             isDoneFilter = params('is_done')
 
         obj = Task.objects.filter(is_done=isDoneFilter)
-        if params('get_mail'):
-            obj.filter(user__email=params('get_mail'))
+        if params('get_mail') and '@' in params('get_mail'):
+            obj = Task.objects.filter(is_done=isDoneFilter, user__email=params('get_mail'))
             
         return obj.order_by(sortingMethod)
 
